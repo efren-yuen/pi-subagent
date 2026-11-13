@@ -1,0 +1,41 @@
+{
+  "name": "@efrencode/pi-subagent",
+  "version": "0.1.0",
+  "description": "Pi subagent 工具：单次/并行/链式委派任务到独立上下文的子 Agent",
+  "type": "module",
+  "license": "MIT",
+  "keywords": ["pi-package"],
+  "engines": { "node": ">=22.19.0" },
+  "pi": { "extensions": ["./index.ts"] },
+  "files": [
+    "index.ts",
+    "src/**",
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "package-lock.json"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "pack:check": "npm pack --dry-run"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "@earendil-works/pi-agent-core": "*",
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "typebox": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-agent-core": "1.5.2",
+    "@earendil-works/pi-ai": "1.5.2",
+    "@earendil-works/pi-coding-agent": "1.5.2",
+    "@earendil-works/pi-tui": "1.5.2",
+    "typebox": "1.3.27",
+    "@types/node": "^22.19.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  }
+}
