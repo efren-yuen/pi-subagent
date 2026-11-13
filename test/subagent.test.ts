@@ -73,7 +73,7 @@ describe("truncateParallelOutput", () => {
 		const text = "a".repeat(60 * 1024);
 		const result = truncateParallelOutput(text);
 		expect(result).toContain("[Output truncated:");
-		expect(Buffer.byteLength(result, "utf8")).toBeLessThan(60 * 1024);
+		expect(Buffer.byteLength(result, "utf8")).toBeLessThanOrEqual(50 * 1024);
 	});
 
 	it("多字节字符不产生乱码", () => {
@@ -81,6 +81,13 @@ describe("truncateParallelOutput", () => {
 		const result = truncateParallelOutput(text);
 		expect(result).not.toContain("\uFFFD");
 		expect(result.startsWith("中")).toBe(true);
+	});
+
+	it("emoji 在截断边界保持合法 UTF-8，提示计入单项预算", () => {
+		const result = truncateParallelOutput("a" + "😀".repeat(20_000));
+		expect(Buffer.from(result).toString("utf8")).toBe(result);
+		expect(result).not.toContain("\uFFFD");
+		expect(Buffer.byteLength(result)).toBeLessThanOrEqual(50 * 1024);
 	});
 });
 

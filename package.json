@@ -4,6 +4,12 @@
   "description": "Pi subagent 工具：单次/并行/链式委派任务到独立上下文的子 Agent",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/efren-yuen/pi-subagent.git"
+  },
+  "bugs": { "url": "https://github.com/efren-yuen/pi-subagent/issues" },
+  "publishConfig": { "access": "public" },
   "keywords": ["pi-package"],
   "engines": { "node": ">=22.19.0" },
   "pi": { "extensions": ["./index.ts"] },

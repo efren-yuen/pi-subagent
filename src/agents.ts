@@ -78,28 +78,24 @@ function loadAgentsFromDir(dir: string, source: "user" | "project"): AgentConfig
 		if (!entry.isFile() && !entry.isSymbolicLink()) continue;
 
 		const filePath = path.join(dir, entry.name);
-		let content: string;
 		try {
-			content = fs.readFileSync(filePath, "utf-8");
+			const content = fs.readFileSync(filePath, "utf-8");
+			const { frontmatter, body } = parseFrontmatter<AgentFrontmatter>(content);
+			if (typeof frontmatter.name !== "string" || typeof frontmatter.description !== "string") continue;
+
+			agents.push({
+				name: frontmatter.name,
+				description: frontmatter.description,
+				tools: parseToolList(frontmatter.tools),
+				model: typeof frontmatter.model === "string" ? frontmatter.model : undefined,
+				systemPrompt: body,
+				source,
+				filePath,
+			});
 		} catch {
+			// 单个文件不可读或 YAML 损坏时跳过，不泄露配置内容，也不阻断其他 Agent。
 			continue;
 		}
-
-		const { frontmatter, body } = parseFrontmatter<AgentFrontmatter>(content);
-
-		if (typeof frontmatter.name !== "string" || typeof frontmatter.description !== "string") {
-			continue;
-		}
-
-		agents.push({
-			name: frontmatter.name,
-			description: frontmatter.description,
-			tools: parseToolList(frontmatter.tools),
-			model: typeof frontmatter.model === "string" ? frontmatter.model : undefined,
-			systemPrompt: body,
-			source,
-			filePath,
-		});
 	}
 
 	return agents;
